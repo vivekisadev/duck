@@ -1,22 +1,31 @@
 {
-  "name": "duck",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "duck-ai-cli",
+  "version": "1.0.2",
+  "description": "An AI pair programmer that hooks into your git commit workflow.",
+  "main": "src/cli.js",
   "bin": {
     "duck": "./bin/duck.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "ai",
+    "git",
+    "cli",
+    "commit",
+    "groq",
+    "ollama"
+  ],
+  "author": "Vivek",
+  "license": "MIT",
   "type": "module",
   "dependencies": {
     "boxen": "^8.0.1",
     "chalk": "^5.6.2",
+    "clipboardy": "^5.3.1",
     "commander": "^15.0.0",
+    "duck-ai-cli": "^1.0.2",
     "figures": "^6.1.0",
     "inquirer": "^14.0.2",
     "listr2": "^10.2.2",
