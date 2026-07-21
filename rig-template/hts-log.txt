@@ -1,0 +1,24 @@
+HTTrack3.49-2+htsswf+htsjava launched on Sun, 19 Jul 2026 14:23:37 at https://rig.ai +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar
+(winhttrack -qwC2%Ps2u1%s%uN0%I0p3DaK0H0%kf2A25000%f#f -F "Mozilla/4.5 (compatible; HTTrack 3.0x; Windows 98)" -%F "<!-- Mirrored from %s%s by HTTrack Website Copier/3.x [XR&CO'2014], %s -->" -%l "en, *" https://rig.ai -O1 "C:\Users\Vivek\Downloads\downloads\New folder\rig-template" +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+14:23:51	Error: 	"Not Found" (404) at link https://rig.ai/cdn-cgi/l/email-protection (from https://rig.ai/privacy)
+14:23:51	Warning: 	Retry after error 502 (Bad Gateway) at link https://rig.ai/api/media/file/rigd-flow-400x300.png (from https://rig.ai/blog/building-inference-engine)
+14:23:51	Warning: 	Retry after error 502 (Bad Gateway) at link https://rig.ai/api/media/file/rigd-flow-768x1024.png (from https://rig.ai/blog/building-inference-engine)
+14:23:51	Warning: 	Retry after error 502 (Bad Gateway) at link https://rig.ai/api/media/file/rigd-flow-1920x1080.png (from https://rig.ai/blog/building-inference-engine)
+14:23:51	Warning: 	Retry after error 502 (Bad Gateway) at link https://rig.ai/api/media/file/rigd-flow.png (from https://rig.ai/blog/building-inference-engine)
+14:23:52	Warning: 	Retry after error 502 (Bad Gateway) at link https://rig.ai/api/media/file/rigd-flow-400x300.png (from https://rig.ai/blog/building-inference-engine)
+14:23:52	Warning: 	Retry after error 502 (Bad Gateway) at link https://rig.ai/api/media/file/rigd-flow-768x1024.png (from https://rig.ai/blog/building-inference-engine)
+14:23:52	Warning: 	Retry after error 502 (Bad Gateway) at link https://rig.ai/api/media/file/rigd-flow-1920x1080.png (from https://rig.ai/blog/building-inference-engine)
+14:23:53	Warning: 	Retry after error 502 (Bad Gateway) at link https://rig.ai/api/media/file/rigd-flow.png (from https://rig.ai/blog/building-inference-engine)
+14:23:53	Error: 	"Bad Gateway" (502) after 2 retries at link https://rig.ai/api/media/file/rigd-flow-400x300.png (from https://rig.ai/blog/building-inference-engine)
+14:23:53	Error: 	"Bad Gateway" (502) after 2 retries at link https://rig.ai/api/media/file/rigd-flow-768x1024.png (from https://rig.ai/blog/building-inference-engine)
+14:23:53	Error: 	"Bad Gateway" (502) after 2 retries at link https://rig.ai/api/media/file/rigd-flow-1920x1080.png (from https://rig.ai/blog/building-inference-engine)
+14:23:53	Error: 	"Bad Gateway" (502) after 2 retries at link https://rig.ai/api/media/file/rigd-flow.png (from https://rig.ai/blog/building-inference-engine)
+
+HTTrack Website Copier/3.49-2 mirror complete in 16 seconds : 46 links scanned, 32 files written (6092171 bytes overall) [5845286 bytes received at 365330 bytes/sec], 501630 bytes transferred using HTTP compression in 26 files, ratio 28%, 11.5 requests per connection
+(5 errors, 8 warnings, 0 messages)
