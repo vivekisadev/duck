@@ -1,0 +1,143 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --paper: #ffffff;
+    --paper-70: rgba(255, 255, 255, 0.7);
+    --paper-50: rgba(255, 255, 255, 0.5);
+    --paper-45: rgba(255, 255, 255, 0.45);
+    --paper-35: rgba(255, 255, 255, 0.35);
+    --paper-30: rgba(255, 255, 255, 0.3);
+    --paper-20: rgba(255, 255, 255, 0.2);
+    --paper-15: rgba(255, 255, 255, 0.15);
+    --paper-06: rgba(255, 255, 255, 0.06);
+    --paper-04: rgba(255, 255, 255, 0.04);
+    --paper-02: rgba(255, 255, 255, 0.02);
+    --paper-dim: rgba(255, 255, 255, 0.65);
+    --paper-faint: rgba(255, 255, 255, 0.15);
+    --red: #ff571a;
+    --red-glow: rgba(255, 87, 26, 0.5);
+    --ink: #000000;
+    --border: rgba(255, 87, 26, 0.15);
+    --border-dim: rgba(255, 87, 26, 0.08);
+    --green: #22c55e;
+    
+    --chamfer: 0px;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html {
+    font-size: 16px;
+    background-color: var(--ink);
+    color: var(--paper);
+  }
+  
+  html.lenis, html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+  
+  .lenis.lenis-smooth iframe {
+    pointer-events: none;
+  }
+  
+  body {
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  
+  ::selection {
+    background-color: var(--red);
+    color: var(--ink);
+  }
+}
+
+@layer components {
+  .clip-chamfer {
+    border-radius: 0;
+  }
+  
+  .mono-label {
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+  
+  .section-title {
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.03em;
+  }
+
+  .badge {
+    @apply inline-flex w-fit items-center gap-2 text-sm md:text-base text-red mx-auto font-sans mb-4 md:mb-6;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center font-bold font-sans tracking-wide uppercase transition-all duration-200;
+    background-color: var(--paper);
+    color: var(--ink);
+  }
+  
+  .btn-primary:hover {
+    background-color: var(--red);
+  }
+  
+  .btn-dark {
+    @apply inline-flex items-center justify-center font-bold font-sans tracking-wide uppercase transition-all duration-200;
+    background-color: rgba(240, 237, 230, 0.1);
+    color: var(--paper);
+  }
+  
+  .btn-dark:hover {
+    background-color: var(--red);
+    color: var(--ink);
+  }
+
+  .btn-chamfer {
+    @apply clip-chamfer px-8 py-4;
+  }
+
+  .section-divider {
+    @apply w-full h-px bg-border my-0;
+  }
+
+  .grid-border {
+    @apply border border-border;
+  }
+  
+  .grid-border-t {
+    @apply border-t border-border;
+  }
+  
+  .grid-border-b {
+    @apply border-b border-border;
+  }
+  
+  .grid-border-l {
+    @apply border-l border-border;
+  }
+  
+  .grid-border-r {
+    @apply border-r border-border;
+  }
+}
