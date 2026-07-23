@@ -2,6 +2,7 @@ import simpleGit from 'simple-git';
 import chalk from 'chalk';
 import boxen from 'boxen';
 import { getCompletion } from '../ai/provider.js';
+import { getStandupSystemPrompt, getStandupPrompt } from '../ai/prompts.js';
 import { loadConfig } from '../config/loadConfig.js';
 import inquirer from 'inquirer';
 import ora from 'ora';
@@ -45,11 +46,11 @@ export async function runStandup() {
     const prompt = [
       {
         role: "system",
-        content: "You are a developer assistant. Read this list of git commits and generate a short, bulleted standup update for a daily meeting. Group related commits into a single bullet point summarizing the actual feature or fix. Do not include commit hashes. Keep the tone professional but conversational. Output ONLY the bullet points."
+        content: getStandupSystemPrompt()
       },
       {
         role: "user",
-        content: `Commits:\n${commitList}`
+        content: getStandupPrompt(commitList)
       }
     ];
 

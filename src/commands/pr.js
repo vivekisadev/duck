@@ -2,6 +2,7 @@ import simpleGit from 'simple-git';
 import chalk from 'chalk';
 import boxen from 'boxen';
 import { getCompletion } from '../ai/provider.js';
+import { getPrSystemPrompt, getPrPrompt } from '../ai/prompts.js';
 import { loadConfig } from '../config/loadConfig.js';
 import inquirer from 'inquirer';
 import ora from 'ora';
@@ -52,11 +53,11 @@ export async function runPr() {
     const prompt = [
       {
         role: "system",
-        content: "You are a developer assistant. Read this list of git commits from a feature branch and draft a full Pull Request description. Include the following sections: ## What (brief summary), ## Why (intent/context), ## Testing (how it was tested or should be tested), and ## Notes for reviewer. Use markdown formatting."
+        content: getPrSystemPrompt()
       },
       {
         role: "user",
-        content: `Commits on this branch:\n${commitList}`
+        content: getPrPrompt(commitList)
       }
     ];
 

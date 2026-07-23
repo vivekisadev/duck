@@ -2,6 +2,7 @@ import simpleGit from 'simple-git';
 import chalk from 'chalk';
 import boxen from 'boxen';
 import { getCompletion } from '../ai/provider.js';
+import { getWorklogSystemPrompt, getWorklogPrompt } from '../ai/prompts.js';
 import { loadConfig } from '../config/loadConfig.js';
 import inquirer from 'inquirer';
 import ora from 'ora';
@@ -52,11 +53,11 @@ export async function runWorklog(range = '1 week') {
     const prompt = [
       {
         role: "system",
-        content: "You are a developer assistant. Read this list of git commits (which include timestamps) and generate a day-by-day worklog (e.g. Mon: Did X, Tue: Did Y). Group related commits on the same day into concise summaries. Output ONLY the day-by-day breakdown."
+        content: getWorklogSystemPrompt()
       },
       {
         role: "user",
-        content: `Commits:\n${commitList}`
+        content: getWorklogPrompt(commitList)
       }
     ];
 

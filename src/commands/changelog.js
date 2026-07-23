@@ -2,6 +2,7 @@ import simpleGit from 'simple-git';
 import chalk from 'chalk';
 import boxen from 'boxen';
 import { getCompletion } from '../ai/provider.js';
+import { getChangelogSystemPrompt, getChangelogPrompt } from '../ai/prompts.js';
 import { loadConfig } from '../config/loadConfig.js';
 import inquirer from 'inquirer';
 import ora from 'ora';
@@ -47,11 +48,11 @@ export async function runChangelog(fromTag, toTag) {
     const prompt = [
       {
         role: "system",
-        content: `You are a developer assistant. Read this list of git commits and generate release notes for version ${toTag}. Group them logically into sections like ### Features, ### Fixes, and ### Chores. Use markdown formatting.`
+        content: getChangelogSystemPrompt()
       },
       {
         role: "user",
-        content: `Commits:\n${commitList}`
+        content: getChangelogPrompt(commitList)
       }
     ];
 

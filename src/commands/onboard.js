@@ -1,6 +1,7 @@
 import simpleGit from 'simple-git';
 import chalk from 'chalk';
 import { getCompletion } from '../ai/provider.js';
+import { getOnboardSystemPrompt, getOnboardPrompt } from '../ai/prompts.js';
 import { loadConfig } from '../config/loadConfig.js';
 import ora from 'ora';
 import fs from 'fs';
@@ -45,11 +46,11 @@ export async function runOnboard() {
     const prompt = [
       {
         role: "system",
-        content: "You are a senior developer helping onboard a new team member. Read the project directory structure and recent commit history, and generate an ONBOARDING.md file. Include: Project structure overview, where the real logic lives vs boilerplate, commit message conventions this repo actually follows (based on the provided history), and any common patterns or gotchas found in the commits. Use markdown."
+        content: getOnboardSystemPrompt()
       },
       {
         role: "user",
-        content: `Structure:\n${tree}\n\nRecent Commits:\n${commitList}`
+        content: getOnboardPrompt(tree, commitList)
       }
     ];
 

@@ -10,6 +10,74 @@ export async function runCli() {
     .description('An AI pair programmer that hooks into the git commit workflow.')
     .version('1.0.0');
 
+  const customHelpText = `
+🦆 Welcome to Duck CLI — The AI-Powered Developer's Best Friend! 🦆
+
+Duck hooks into your standard git workflow to eliminate chores, answer the "why" behind code changes, and keep your repo sparkling clean.
+
+--- Core Commands ---
+🦆 duck commit
+   Why: Write excellent, context-rich commit messages instantly without context-switching.
+   How: Stage your files (git add) then run \`duck commit\`.
+
+🦆 duck pr
+   Why: Don't spend 20 minutes writing a PR description from scratch.
+   How: Run \`duck pr\` on your feature branch before opening a Pull Request.
+
+🦆 duck standup
+   Why: Never struggle to answer "what did you do yesterday?" at the 9am meeting.
+   How: Run \`duck standup\` to summarize your recent commits.
+
+🦆 duck worklog
+   Why: Easily remember your week's work for timesheets without guessing.
+   How: Run \`duck worklog --range "this week"\`.
+
+--- Code Context ---
+🦆 duck blame-explain <file>:<line>
+   Why: Understand the intent behind code before you break it.
+   How: Run \`duck blame-explain src/utils.js:42\`.
+
+🦆 duck resolve (conflict-explain)
+   Why: Merge conflicts are terrifying; Duck reads both branches and explains how to fix it.
+   How: Run \`duck resolve\` when you hit a git merge conflict.
+
+🦆 duck stash-explain
+   Why: Stop guessing what "WIP on main" actually means.
+   How: Run \`duck stash-explain\` to summarize your git stashes.
+
+🦆 duck onboard
+   Why: Get new devs up to speed without writing docs manually.
+   How: Run \`duck onboard\` in your repository root.
+
+--- Safety & Maintenance ---
+🦆 duck preflight
+   Why: Never accidentally push a console.log or commented-out code again.
+   How: Run \`duck preflight\` before you push.
+
+🦆 duck deps
+   Why: Keep your project safe without manually auditing package.json.
+   How: Run \`duck deps\`.
+
+🦆 duck clean
+   Why: Keep your local git environment tidy by deleting stale/merged branches safely.
+   How: Run \`duck clean\`.
+
+🦆 duck timewarp
+   Why: Backdate and distribute your commits across a custom timeline (e.g. to fill a GitHub contribution graph).
+   How: Run \`duck timewarp --range "2026-06-01:2026-06-25"\`.
+
+Run \`duck <command> --help\` for specific options.
+`;
+
+  program.helpInformation = () => customHelpText;
+
+  program
+    .command('/help')
+    .description('Show Duck help menu')
+    .action(() => {
+      console.log(customHelpText);
+    });
+
   program
     .command('diff')
     .description('View the staged git diff')
@@ -405,6 +473,7 @@ export async function runCli() {
 
   program
     .command('timewarp')
+    .alias('backdate')
     .description('Backdate and distribute staged changes across a timeline')
     .option('--range <range>', 'Date or date range (e.g., 2026-06-01:2026-06-25)')
     .option('--date <date>', 'Single date to commit all staged changes')

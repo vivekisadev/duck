@@ -1,6 +1,7 @@
 import simpleGit from 'simple-git';
 import chalk from 'chalk';
 import { getCompletion } from '../ai/provider.js';
+import { getConflictExplainSystemPrompt, getConflictExplainPrompt } from '../ai/prompts.js';
 import { loadConfig } from '../config/loadConfig.js';
 import inquirer from 'inquirer';
 import ora from 'ora';
@@ -42,11 +43,11 @@ export async function runResolve() {
       const prompt = [
         {
           role: "system",
-          content: "You are a Git expert. A developer has a merge conflict in the provided file. Read the <<<<<<<, =======, and >>>>>>> markers. Explain WHY the two branches diverged in plain English, and suggest whether they should keep both, or pick one side. Keep the explanation concise (2-3 sentences)."
+          content: getConflictExplainSystemPrompt()
         },
         {
           role: "user",
-          content: `Here is the conflicted file content:\n\n${content}`
+          content: getConflictExplainPrompt(file, content)
         }
       ];
 

@@ -104,6 +104,11 @@ export async function executeTimewarp(range, commitsCount, distribution) {
 
   const filesPerCommit = Math.max(1, Math.ceil(stagedFiles.length / commitsCount));
   
+  const { loadConfig } = await import('../config/loadConfig.js');
+  const { generateDraftMessage } = await import('./draftMessage.js');
+  const ora = (await import('ora')).default;
+  const config = await loadConfig();
+  
   for (let i = 0; i < commitsCount; i++) {
     const chunk = stagedFiles.slice(i * filesPerCommit, (i + 1) * filesPerCommit);
     if (chunk.length === 0) break; // No more files
@@ -114,16 +119,35 @@ export async function executeTimewarp(range, commitsCount, distribution) {
     // Stage chunk
     await git.add(chunk);
     
-    // Commit with dates
-    await git.env('GIT_AUTHOR_DATE', dateStr)
-             .env('GIT_COMMITTER_DATE', dateStr)
-             .commit(`chore: timewarp chunk ${i + 1}\n\nFiles: ${chunk.join(', ')}`);
+    // Get diff and generate AI message
+    const chunkDiff = await git.diff(['--staged']);
+    let commitMessage = `chore: timewarp chunk ${i + 1}\n\nFiles: ${chunk.join(', ')}`;
+    
+    if (chunkDiff) {
+      const spinner = ora(`Drafting AI message for chunk ${i + 1}...`).start();
+      try {
+        const draft = await generateDraftMessage(chunkDiff, config);
+        if (draft) commitMessage = draft;
+        spinner.stop();
+      } catch (err) {
+        spinner.stop();
+        console.log(chalk.yellow(`Failed AI draft for chunk ${i + 1}, using fallback.`));
+      }
+    }
+    
+    // Commit with dates using env variables.
+    // Create a new simpleGit instance for the commit to ensure env vars are strictly scoped
+    // and don't pollute the main instance.
+    const scopedGit = (await import('simple-git')).default();
+    await scopedGit.env({
+      ...process.env,
+      GIT_AUTHOR_DATE: dateStr,
+      GIT_COMMITTER_DATE: dateStr
+    }).commit(commitMessage);
              
     console.log(chalk.green(`✅ Committed chunk ${i + 1} at ${dateStr}`));
+    console.log(chalk.cyan(`   Message: ${commitMessage.split('\n')[0]}`));
   }
   
-  // Clean up env vars for future commands in this process just in case
-  await git.env('GIT_AUTHOR_DATE', undefined).env('GIT_COMMITTER_DATE', undefined);
-  
-  console.log(chalk.green('\nTimewarp complete! 🦆🚀'));
+  console.log(chalk.green('\nTimewarp complete! Your GitHub graph looks mighty busy. 🦆🚀'));
 }

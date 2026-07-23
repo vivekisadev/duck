@@ -1,6 +1,7 @@
 import simpleGit from 'simple-git';
 import chalk from 'chalk';
 import { getCompletion } from '../ai/provider.js';
+import { getBlameExplainSystemPrompt, getBlameExplainPrompt } from '../ai/prompts.js';
 import { loadConfig } from '../config/loadConfig.js';
 import ora from 'ora';
 
@@ -63,11 +64,11 @@ export async function runBlameExplain(target) {
     const prompt = [
       {
         role: "system",
-        content: "You are a Git expert. Your job is to explain WHY a specific line of code was changed based on its commit message and diff context. Keep it to one concise paragraph. Explain the intent, not just restate the code."
+        content: getBlameExplainSystemPrompt()
       },
       {
         role: "user",
-        content: `Explain why line ${line} in ${file} was changed based on this commit (hash: ${hash}):\n\n${showOutput}`
+        content: getBlameExplainPrompt(`${file}:${line}`, `Hash: ${hash}`, showOutput)
       }
     ];
 

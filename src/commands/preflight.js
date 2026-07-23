@@ -23,52 +23,42 @@ export async function runPreflight() {
     return;
   }
 
-  const warnings = [];
+  const config = await (async () => {
+    const { loadConfig } = await import('../config/loadConfig.js');
+    return await loadConfig();
+  })();
   
-  // Very basic parsing to find warnings in added lines
-  const lines = diff.split('\n');
-  let currentFile = '';
-  let lineNum = 0;
-
-  for (let line of lines) {
-    if (line.startsWith('diff --git a/')) {
-      // Very naive parsing of file name
-      currentFile = line.split(' b/')[1];
-      lineNum = 0;
-    } else if (line.startsWith('@@ ')) {
-      // Extract starting line number for the new hunk
-      // Format: @@ -10,5 +10,6 @@
-      const match = line.match(/\+([0-9]+)/);
-      if (match) {
-        lineNum = parseInt(match[1], 10) - 1;
+  const spinner = (await import('ora')).default('Duck is scanning diff for leftovers...').start();
+  let aiResponse = '';
+  
+  try {
+    const { getCompletion } = await import('../ai/provider.js');
+    const { getPreflightSystemPrompt, getPreflightPrompt } = await import('../ai/prompts.js');
+    
+    const prompt = [
+      {
+        role: "system",
+        content: getPreflightSystemPrompt()
+      },
+      {
+        role: "user",
+        content: getPreflightPrompt(diff)
       }
-    } else if (line.startsWith('+') && !line.startsWith('+++')) {
-      lineNum++;
-      const addedContent = line.substring(1).trim();
+    ];
 
-      // Check console.log
-      if (addedContent.includes('console.log(') || addedContent.includes('console.error(')) {
-        warnings.push(`${chalk.yellow('⚠')} ${currentFile}:${lineNum} — console.log left in`);
-      }
-
-      // Check TODO
-      if (addedContent.includes('TODO:')) {
-        warnings.push(`${chalk.yellow('⚠')} ${currentFile}:${lineNum} — unresolved TODO`);
-      }
-
-      // Check commented block (heuristic: line starts with multiple // or /* and is long)
-      // This is a naive heuristic for MVP.
-      if (addedContent.startsWith('//') && addedContent.length > 50) {
-         warnings.push(`${chalk.yellow('⚠')} ${currentFile}:${lineNum} — long commented-out line`);
-      }
-    } else if (!line.startsWith('-')) {
-      // Context line, just increment line number
-      lineNum++;
-    }
+    aiResponse = await getCompletion(prompt, config);
+    spinner.stop();
+  } catch (err) {
+    spinner.stop();
+    console.log(chalk.red(`Failed to run AI scan: ${err.message}`));
+    return;
   }
+  
+  const warnings = aiResponse.trim();
+  const isClean = warnings === 'CLEAN';
 
-  if (warnings.length > 0) {
-    console.log('\n' + boxen(warnings.join('\n'), {
+  if (!isClean) {
+    console.log('\n' + boxen(warnings, {
       title: '🦆 Preflight Warnings',
       padding: 1,
       borderStyle: 'round',
