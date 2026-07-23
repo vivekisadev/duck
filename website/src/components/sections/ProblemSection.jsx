@@ -2,7 +2,7 @@ import React from 'react';
 
 const ProblemSection = () => {
   return (
-    <section className="p-0 border-none relative bg-transparent">
+    <section id="problem" className="p-0 border-none relative bg-transparent">
       {/* Viewport Centered Badge */}
       <div className="absolute top-12 left-1/2 -translate-x-1/2 z-20 w-full text-center">
         <div className="badge mx-auto justify-center">

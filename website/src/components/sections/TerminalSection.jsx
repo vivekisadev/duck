@@ -85,15 +85,11 @@ const TerminalSection = () => {
       const scrollProgress = -top / (height - viewportHeight);
       
       if (top <= 0 && scrollProgress <= 1) {
-        document.querySelector('header')?.classList.add('-translate-y-full');
-        
         const index = Math.min(
           features.length - 1, 
           Math.max(0, Math.floor(scrollProgress * features.length))
         );
         setActiveFeature(index);
-      } else {
-        document.querySelector('header')?.classList.remove('-translate-y-full');
       }
     };
 

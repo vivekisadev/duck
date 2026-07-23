@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import FooterSection from './components/sections/FooterSection';
 import Home from './pages/Home';
 import Documentation from './Documentation';
 import ProblemsPage from './pages/ProblemsPage';
 import Navbar from './components/sections/Navbar';
+import InteractiveTerminal from './components/InteractiveTerminal';
 import './index.css';
 
 import Lenis from '@studio-freight/lenis';
@@ -15,6 +16,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 function App() {
   const location = useLocation();
+  const [isTerminalOpen, setIsTerminalOpen] = useState(false);
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -34,13 +36,12 @@ function App() {
     gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
 
-    // Handle hash scrolling when location changes
     if (location.hash) {
       const id = location.hash.replace('#', '');
       const element = document.getElementById(id);
       if (element) {
         setTimeout(() => {
-          lenis.scrollTo(element, { offset: -80 }); // Offset for navbar
+          lenis.scrollTo(element, { offset: -80 });
         }, 100);
       }
     } else {
@@ -55,13 +56,8 @@ function App() {
 
   const GlobalDashedGrid = () => (
     <div className="fixed inset-0 z-[10001] pointer-events-none flex justify-center overflow-hidden">
-      {/* Left empty space */}
       <div className="flex-1 w-full h-full"></div>
-      
-      {/* Center column bounding lines */}
       <div className="w-full max-w-[1200px] h-full border-l border-r border-border relative"></div>
-      
-      {/* Right empty space */}
       <div className="flex-1 w-full h-full"></div>
     </div>
   );
@@ -84,6 +80,20 @@ function App() {
         <Route path="/problems" element={<ProblemsPage />} />
       </Routes>
       <FooterSection />
+
+      {/* Floating Terminal Trigger */}
+      <button
+        onClick={() => setIsTerminalOpen(true)}
+        className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[10004] bg-[#0a0a0a] border border-border text-paper px-4 py-3 font-mono text-sm shadow-[0_0_20px_rgba(255,87,26,0.2)] hover:shadow-[0_0_30px_rgba(255,87,26,0.4)] hover:border-red transition-all duration-300 flex items-center gap-3 group"
+      >
+        <span className="text-red font-bold group-hover:animate-pulse">❯_</span>
+        <span className="hidden sm:inline">Try Duck CLI</span>
+      </button>
+
+      {/* Interactive Terminal Modal */}
+      {isTerminalOpen && (
+        <InteractiveTerminal onClose={() => setIsTerminalOpen(false)} />
+      )}
     </div>
   );
 }

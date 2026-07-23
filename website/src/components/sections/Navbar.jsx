@@ -1,17 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('');
+  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (location.pathname !== '/') {
+      setActiveSection('');
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    }, {
+      rootMargin: '-20% 0px -60% 0px'
+    });
+
+    // Small timeout to ensure DOM elements are rendered
+    const timeout = setTimeout(() => {
+      const sections = ['problem', 'how-it-works'].map(id => document.getElementById(id)).filter(Boolean);
+      sections.forEach(s => observer.observe(s));
+    }, 100);
+
+    return () => {
+      clearTimeout(timeout);
+      observer.disconnect();
+    };
+  }, [location.pathname]);
 
   const isActive = (path) => {
     if (path.includes('#')) {
       const [pathname, hash] = path.split('#');
-      return location.pathname === pathname && location.hash === '#' + hash;
+      if (location.pathname === pathname) {
+        if (activeSection) return activeSection === hash;
+        return location.hash === '#' + hash;
+      }
+      return false;
     }
     if (path === '/' && location.pathname === '/') {
-      return location.hash === '';
+      return location.hash === '' && !activeSection;
     }
     return location.pathname === path;
   };
@@ -25,11 +67,11 @@ const Navbar = () => {
   };
 
   return (
-    <header className="flex w-full absolute top-0 left-0 z-[10002] bg-ink grid-border-b">
-      <nav className="w-full max-w-7xl mx-auto px-5 md:px-12 py-3 md:py-4 flex justify-between items-center relative" aria-label="Main navigation">
+    <header className={`flex w-full fixed top-0 left-0 z-[10002] transition-all duration-300 ${isScrolled ? 'bg-ink/90 backdrop-blur-md grid-border-b shadow-[0_4px_30px_rgba(0,0,0,0.5)]' : 'bg-ink grid-border-b'}`}>
+      <nav className={`w-full max-w-7xl mx-auto px-5 md:px-12 flex justify-between items-center relative transition-all duration-300 ${isScrolled ? 'py-1.5 md:py-2' : 'py-3 md:py-4'}`} aria-label="Main navigation">
         <Link to="/" className="flex items-center text-paper" aria-label="Duck CLI — Home">
-          <img src="/assets/logo1.png" alt="Duck Logo" className="w-10 h-13 md:w-12 md:h-13 object-contain -mr-1 md:-mr-2" />
-          <span className="font-sans text-xl md:text-2xl font-bold tracking-tight">DUCK CLI</span>
+          <img src="/assets/logo1.png" alt="Duck Logo" className={`object-contain -mr-1 md:-mr-2 transition-all duration-300 ${isScrolled ? 'w-8 h-10 md:w-9 md:h-11' : 'w-10 h-13 md:w-12 md:h-13'}`} />
+          <span className={`font-sans font-bold tracking-tight transition-all duration-300 ${isScrolled ? 'text-lg md:text-xl' : 'text-xl md:text-2xl'}`}>DUCK CLI</span>
         </Link>
         
         <button 

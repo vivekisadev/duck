@@ -196,7 +196,7 @@ const HowItWorksSection = () => {
   ];
 
   return (
-    <section className="p-0 bg-transparent relative overflow-hidden" id="our-approach" ref={sectionRef}>
+    <section className="p-0 bg-transparent relative overflow-hidden" id="how-it-works" ref={sectionRef}>
 
       {/* Viewport Centered Badge */}
       <div className="absolute top-12 left-1/2 -translate-x-1/2 z-20 w-full text-center">

@@ -40,7 +40,7 @@ const HeroSection = () => {
       
       {/* Ticker */}
       <div className="border-t border-border py-3 overflow-hidden relative z-10">
-        <div className={`flex gap-8 md:gap-16 whitespace-nowrap font-pixel text-xs text-red tracking-widest uppercase ${isVisible ? 'animate-ticker' : ''}`}>
+        <div className={`flex items-center gap-8 md:gap-16 whitespace-nowrap font-pixel text-xs text-red tracking-widest uppercase ${isVisible ? 'animate-ticker' : ''}`}>
           {/* Double the content for smooth infinite marquee */}
           {Array(2).fill(0).map((_, i) => (
             <React.Fragment key={i}>
