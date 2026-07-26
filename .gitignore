@@ -1,0 +1,12 @@
+node_modules/
+.env
+.DS_Store
+
+# Temporary helper scripts and folders
+rig-template/
+convert.cjs
+fix.js
+backdate.cjs
+update_badges.cjs
+files.txt
+w

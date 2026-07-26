@@ -114,7 +114,7 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link id="nav-join-btn" to="/#install" className="btn-primary max-md:bg-red max-md:text-ink max-md:hover:bg-paper font-bold font-sans tracking-wide uppercase transition-all duration-200 inline-flex items-center justify-center text-xs md:text-sm h-[22px] py-6 px-6" onClick={() => setIsOpen(false)}>
+            <Link id="nav-join-btn" to="/docs#installation" className="btn-primary max-md:bg-red max-md:text-ink max-md:hover:bg-paper font-bold font-sans tracking-wide uppercase transition-all duration-200 inline-flex items-center justify-center text-xs md:text-sm h-[22px] py-6 px-6" onClick={() => setIsOpen(false)}>
               Install Now
             </Link>
           </li>

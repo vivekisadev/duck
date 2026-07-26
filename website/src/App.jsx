@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import FooterSection from './components/sections/FooterSection';
 import Home from './pages/Home';
 import Documentation from './Documentation';
 import ProblemsPage from './pages/ProblemsPage';
 import Navbar from './components/sections/Navbar';
 import InteractiveTerminal from './components/InteractiveTerminal';
+import Preloader from './components/Preloader';
 import './index.css';
 
 import Lenis from '@studio-freight/lenis';
@@ -17,6 +19,8 @@ gsap.registerPlugin(ScrollTrigger);
 function App() {
   const location = useLocation();
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
+  const [lenisRef, setLenisRef] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -35,24 +39,32 @@ function App() {
 
     gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
-
-    if (location.hash) {
-      const id = location.hash.replace('#', '');
-      const element = document.getElementById(id);
-      if (element) {
-        setTimeout(() => {
-          lenis.scrollTo(element, { offset: -80 });
-        }, 100);
-      }
-    } else {
-      lenis.scrollTo(0);
-    }
+    
+    setLenisRef(lenis);
 
     return () => {
       lenis.destroy();
       gsap.ticker.remove(raf);
     };
-  }, [location]);
+  }, []); // Run only once on mount
+
+  useEffect(() => {
+    if (!lenisRef) return;
+
+    if (location.hash) {
+      const id = location.hash.replace('#', '');
+      const element = document.getElementById(id);
+      if (element) {
+        // Slight delay to allow page transition and rendering to complete
+        setTimeout(() => {
+          lenisRef.scrollTo(element, { offset: -80, immediate: false });
+        }, 300);
+      }
+    } else {
+      // Immediate scroll to top when changing pages
+      lenisRef.scrollTo(0, { immediate: true });
+    }
+  }, [location, lenisRef]);
 
   const GlobalDashedGrid = () => (
     <div className="fixed inset-0 z-[10001] pointer-events-none flex justify-center overflow-hidden">
@@ -70,15 +82,33 @@ function App() {
     </div>
   );
 
+  // Reusable page transition wrapper
+  const PageWrapper = ({ children }) => (
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -15 }}
+      transition={{ duration: 0.3, ease: [0.2, 1, 0.3, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
+
   return (
     <div className="bg-ink min-h-screen text-paper overflow-x-clip selection:bg-red selection:text-ink relative">
+      {isLoading && <Preloader onComplete={() => setIsLoading(false)} />}
+      
       <Navbar />
       <GlobalDashedGrid />
-      <Routes>
-        <Route path="/" element={<Home SectionSeparator={SectionSeparator} />} />
-        <Route path="/docs" element={<Documentation SectionSeparator={SectionSeparator} />} />
-        <Route path="/problems" element={<ProblemsPage />} />
-      </Routes>
+      
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<PageWrapper><Home SectionSeparator={SectionSeparator} /></PageWrapper>} />
+          <Route path="/docs" element={<PageWrapper><Documentation SectionSeparator={SectionSeparator} /></PageWrapper>} />
+          <Route path="/problems" element={<PageWrapper><ProblemsPage /></PageWrapper>} />
+        </Routes>
+      </AnimatePresence>
+
       <FooterSection />
 
       {/* Floating Terminal Trigger */}

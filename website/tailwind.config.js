@@ -40,8 +40,21 @@ export default {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
-        }
-      },
+        },
+        paper: {
+          DEFAULT: "var(--paper)",
+          70: "var(--paper-70)",
+          50: "var(--paper-50)",
+          45: "var(--paper-45)",
+          35: "var(--paper-35)",
+          30: "var(--paper-30)",
+          20: "var(--paper-20)",
+          15: "var(--paper-15)",
+          "06": "var(--paper-06)",
+          "04": "var(--paper-04)",
+          dim: "var(--paper-dim)",
+          faint: "var(--paper-faint)",
+        },
         red: {
           DEFAULT: '#ff571a',
           glow: 'rgba(255, 87, 26, 0.5)',
@@ -146,7 +159,7 @@ export default {
         'blink': 'blink 1.5s step-end infinite',
         'howProgressFill': 'howProgressFill 6s linear forwards',
       }
-    },
+    }
   },
-  plugins: [require("tailwindcss-animate"),],
+  plugins: [require("tailwindcss-animate")],
 }

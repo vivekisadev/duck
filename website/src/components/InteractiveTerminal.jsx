@@ -359,6 +359,8 @@ export default function InteractiveTerminal({ onClose }) {
           ref={scrollRef}
           className="h-[500px] max-h-[70vh] overflow-y-auto p-4 md:p-6 font-mono text-sm md:text-base cursor-text custom-scrollbar"
           onClick={() => inputRef.current?.focus()}
+          onWheel={(e) => e.stopPropagation()}
+          onTouchMove={(e) => e.stopPropagation()}
           data-lenis-prevent="true"
         >
           {history.map((line, i) => (

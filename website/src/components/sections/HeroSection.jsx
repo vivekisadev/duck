@@ -17,7 +17,7 @@ const HeroSection = () => {
       <img 
         src="/assets/logo1.png" 
         alt="Duck Watermark"
-        className={`absolute left-[350px] top-[45vh] -translate-x-1/2 -translate-y-1/2 h-[160%] md:h-[220%] w-auto max-w-none opacity-10 pointer-events-none object-contain mix-blend-screen ${isVisible ? 'animate-[watermark-glitch_4s_linear_infinite]' : ''}`}
+        className={`absolute left-[350px] top-[55%] -translate-x-1/2 -translate-y-1/2 h-[160%] md:h-[220%] w-auto max-w-none opacity-10 pointer-events-none object-contain mix-blend-screen ${isVisible ? 'animate-[watermark-glitch_4s_linear_infinite]' : ''}`}
         aria-hidden="true"
       />
       
