@@ -96,7 +96,8 @@ export async function getCompletion(prompt, systemPrompt = '', config = {}) {
       }
       return await callGroq(prompt, systemPrompt, config);
     } catch (err) {
-      console.log('⚠ Your personal API key hit a limit or failed — falling back to shared flock capacity for this request.');
+      console.log(`⚠ API Provider Error: ${err.message}`);
+      console.log('🦆 Falling back to shared flock capacity for this request.');
       // Fall through to relay
     }
   }

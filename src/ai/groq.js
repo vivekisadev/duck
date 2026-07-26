@@ -4,7 +4,7 @@ export async function callGroq(prompt, systemPrompt = '', config = {}) {
     throw new Error('Groq API key is not set.');
   }
 
-  const model = config.model || 'llama3-8b-8192'; // Using an accessible fast model by default
+  const model = config.model || 'llama-3.1-8b-instant'; // Using an accessible fast model by default
 
   const messages = [];
   if (systemPrompt) {

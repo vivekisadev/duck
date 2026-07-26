@@ -4,7 +4,7 @@ import os from 'os';
 
 const defaultConfig = {
   provider: 'groq',
-  model: 'llama3-8b-8192',
+  model: 'llama-3.1-8b-instant',
   apiKeyEnvVar: 'DUCK_GROQ_API_KEY',
   style: 'conventional-commits',
   duckPersonality: 'neutral',
