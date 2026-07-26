@@ -1,6 +1,6 @@
 {
   "name": "duck-ai-cli",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "An AI pair programmer that hooks into your git commit workflow.",
   "main": "src/cli.js",
   "bin": {
