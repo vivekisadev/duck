@@ -25,7 +25,7 @@ export async function runGoto(ref) {
     console.log(chalk.red(`  belong to a branch and can be lost when you switch away.\n`));
 
     const { choice } = await inquirer.prompt([{
-      type: 'list',
+      type: 'select',
       name: 'choice',
       message: 'What do you want to do?',
       choices: [

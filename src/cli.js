@@ -1,5 +1,6 @@
 import { Command } from 'commander';
 import { getDiff } from './git/getDiff.js';
+import { commitChanges } from './git/commit.js';
 import chalk from 'chalk';
 
 export async function runCli() {
@@ -211,7 +212,7 @@ Run \`duck <command> --help\` for specific options.
 
         const { action } = await inquirer.prompt([
           {
-            type: 'list',
+            type: 'select',
             name: 'action',
             message: 'What would you like to do?',
             choices: [
@@ -604,7 +605,7 @@ Run \`duck <command> --help\` for specific options.
 
         const { action } = await inquirer.prompt([
           {
-            type: 'list',
+            type: 'select',
             name: 'action',
             message: 'What would you like to do?',
             choices: [

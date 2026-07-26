@@ -60,7 +60,7 @@ export async function runResolve() {
     }
 
     const { choice } = await inquirer.prompt([{
-      type: 'list',
+      type: 'select',
       name: 'choice',
       message: 'What do you want to do?',
       choices: [
