@@ -16,9 +16,9 @@ export function getDraftSystemPrompt(config = {}) {
     styleInstruction = `Follow this custom style rule strictly: ${style}`;
   }
 
-  return `You are an expert developer assistant. Your task is to write a git commit message based on the provided diff.
-- The first line must be under 72 characters.
-- Add an optional body if the change requires explanation, separated by a blank line.
+  return `You are an expert developer assistant. Your task is to write a concise git commit message based on the provided diff.
+- Provide ONLY a single-line commit message under 72 characters.
+- NEVER add a multi-line body, bullet points, or extra paragraphs, to avoid flooding GitHub history.
 - Do not invent details not present in the diff.
 - Output ONLY the commit message, without any markdown formatting or extra text.
 - ${styleInstruction}`;
