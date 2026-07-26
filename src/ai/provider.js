@@ -89,7 +89,6 @@ export async function getCompletion(prompt, systemPrompt = '', config = {}) {
   // 1. User Key Mode (Primary if configured)
   const envKey = process.env[config.apiKeyEnvVar || 'DUCK_GROQ_API_KEY'];
   if (localConfig.userKey || envKey) {
-    console.log('🦆 *waddling to your personal API provider*');
     try {
       if (localConfig.userKey) {
         process.env.DUCK_GROQ_API_KEY = localConfig.userKey;
@@ -103,9 +102,6 @@ export async function getCompletion(prompt, systemPrompt = '', config = {}) {
   }
 
   // 2. Relay Pool Mode (Default)
-  if (!localConfig.userKey) {
-    console.log('🦆 *waddling to shared Relay servers...*');
-  }
   
   const relayResult = await callRelay(prompt, systemPrompt, installId);
 
