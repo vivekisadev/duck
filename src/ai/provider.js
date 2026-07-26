@@ -87,11 +87,13 @@ export async function getCompletion(prompt, systemPrompt = '', config = {}) {
   const installId = getInstallId();
 
   // 1. User Key Mode (Primary if configured)
-  if (localConfig.userKey) {
+  const envKey = process.env[config.apiKeyEnvVar || 'DUCK_GROQ_API_KEY'];
+  if (localConfig.userKey || envKey) {
     console.log('🦆 *waddling to your personal API provider*');
     try {
-      // Temporarily inject the user key into environment for groq.js
-      process.env.DUCK_GROQ_API_KEY = localConfig.userKey;
+      if (localConfig.userKey) {
+        process.env.DUCK_GROQ_API_KEY = localConfig.userKey;
+      }
       return await callGroq(prompt, systemPrompt, config);
     } catch (err) {
       console.log('⚠ Your personal API key hit a limit or failed — falling back to shared flock capacity for this request.');
@@ -106,8 +108,11 @@ export async function getCompletion(prompt, systemPrompt = '', config = {}) {
   
   const relayResult = await callRelay(prompt, systemPrompt, installId);
 
-  // 3. Exhausted Mode
-  if (relayResult.status === 'exhausted' && !localConfig.hasUserKey) {
+  // 3. Exhausted or Error Mode
+  if ((relayResult.status === 'exhausted' || relayResult.status === 'error') && !localConfig.hasUserKey) {
+    if (relayResult.status === 'error') {
+      console.log('⚠ Could not reach the shared Duck Relay (it might be offline).');
+    }
     const wantsToAddKey = await promptForKey();
     if (wantsToAddKey) {
       localConfig.userKey = wantsToAddKey;
