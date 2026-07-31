@@ -272,6 +272,14 @@ Run \`duck <command> --help\` for specific options.
     });
 
   program
+    .command('init')
+    .description('Initialize a .duckrc configuration file interactively')
+    .action(async () => {
+      const { runInit } = await import('./commands/init.js');
+      await runInit();
+    });
+
+  program
     .command('digest')
     .description('Summarize the commits from the past week')
     .action(async () => {
