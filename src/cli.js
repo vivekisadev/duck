@@ -382,6 +382,28 @@ Run \`duck <command> --help\` for specific options.
     });
 
   program
+    .command('stash-pop [stashId]')
+    .description('Safe stash pop that warns of conflicts before applying')
+    .action(async (stashId) => {
+      const { runStashPop } = await import('./commands/stashPop.js');
+      await runStashPop(stashId);
+    });
+
+  program
+    .command('stash [subcmd] [stashId]')
+    .description('Intercepts stash pop for safety, passes others to git')
+    .action(async (subcmd, stashId) => {
+      if (subcmd === 'pop') {
+        const { runStashPop } = await import('./commands/stashPop.js');
+        await runStashPop(stashId);
+      } else {
+        const { spawnSync } = await import('child_process');
+        const result = spawnSync('git', process.argv.slice(2), { stdio: 'inherit' });
+        process.exit(result.status ?? 0);
+      }
+    });
+
+  program
     .command('blame-explain <target>')
     .description('Explain why a line changed (e.g. src/utils.js:42)')
     .action(async (target) => {
