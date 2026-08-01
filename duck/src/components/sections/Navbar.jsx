@@ -70,8 +70,8 @@ const Navbar = () => {
     <header className={`flex w-full fixed top-0 left-0 z-[10002] transition-all duration-300 ${isScrolled ? 'bg-ink/90 backdrop-blur-md grid-border-b shadow-[0_4px_30px_rgba(0,0,0,0.5)]' : 'bg-ink grid-border-b'}`}>
       <nav className={`w-full max-w-7xl mx-auto px-5 md:px-12 flex justify-between items-center relative transition-all duration-300 ${isScrolled ? 'py-1.5 md:py-2' : 'py-3 md:py-4'}`} aria-label="Main navigation">
         <Link to="/" className="flex items-center text-paper" aria-label="Duck CLI — Home">
-          <img src="/assets/logo1.png" alt="Duck Logo" className={`object-contain -mr-1 md:-mr-2 transition-all duration-300 ${isScrolled ? 'w-8 h-10 md:w-9 md:h-11' : 'w-10 h-13 md:w-12 md:h-13'}`} />
-          <span className={`font-sans font-bold tracking-tight transition-all duration-300 ${isScrolled ? 'text-lg md:text-xl' : 'text-xl md:text-2xl'}`}>DUCK CLI</span>
+          <img src="/assets/logo1.png" alt="Duck Logo" className={`object-contain transition-all duration-300 ${isScrolled ? '-mr-2 md:-mr-3 w-12 h-14 md:w-14 md:h-16' : '-mr-3 md:-mr-4 w-16 h-20 md:w-20 md:h-24'}`} />
+          <span className={`font-sans font-bold tracking-tight transition-all duration-300 ${isScrolled ? 'text-xl md:text-2xl' : 'text-2xl md:text-3xl'}`}>DUCK CLI</span>
         </Link>
         
         <button 
